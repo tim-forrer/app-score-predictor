@@ -1,18 +1,40 @@
-[tool.poetry]
+[project]
 name = "app-score-predictor"
 version = "0.1.0"
-description = "Predicts the score of an app on Google Play Store."
-authors = ["tim@mbp timforrer16@gmail.com"]
-package-mode = false
+description = "Predicts Google Play Store app scores."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+]
 
-[tool.poetry.dependencies]
-python = ">=3.11"
-sentence-transformers = ">=4.1.0,<5.0.0"
-pandas = ">=2.3.0,<3.0.0"
-numpy = ">=2.3.0,<3.0.0"
-pathlib = ">=1.0.1,<2.0.0"
-jupyterlab = ">=4.4.3,<5.0.0"
+[project.optional-dependencies]
+cpu = [
+  "torch>=2.7.0",
+]
+rocm = [
+  "torch>=2.7.0",
+]
 
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.uv]
+conflicts = [
+  [
+    { extra = "cpu" },
+    { extra = "rocm" },
+  ],
+]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", extra = "cpu" },
+  { index = "pytorch-rocm", extra = "rocm" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-rocm"
+url = "https://download.pytorch.org/whl/rocm6.3"
+explicit = true
