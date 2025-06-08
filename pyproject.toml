@@ -5,34 +5,23 @@ description = "Predicts Google Play Store app scores."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-]
-
-[project.optional-dependencies]
-cpu = [
   "torch>=2.7.0",
-]
-rocm = [
-  "torch>=2.7.0",
-]
-
-[tool.uv]
-conflicts = [
-  [
-    { extra = "cpu" },
-    { extra = "rocm" },
-  ],
+  "pytorch-triton-rocm>=3.3.0 ; sys_platform == 'linux'",
+  "pathlib>=1.0.1",
+  "sentence-transformers>=4.1.0",
+  "pandas>=2.3.0",
+  "jupyterlab>=4.4.3",
+  "protobuf>=6.31.1",
+  "sentencepiece>=0.2.0",
 ]
 
 [tool.uv.sources]
 torch = [
-  { index = "pytorch-cpu", extra = "cpu" },
-  { index = "pytorch-rocm", extra = "rocm" },
+  { index = "pytorch-rocm", marker = "sys_platform == 'linux'" },
 ]
-
-[[tool.uv.index]]
-name = "pytorch-cpu"
-url = "https://download.pytorch.org/whl/cpu"
-explicit = true
+pytorch-triton-rocm = [
+  { index = "pytorch-rocm", marker = "sys_platform == 'linux'" },
+]
 
 [[tool.uv.index]]
 name = "pytorch-rocm"
